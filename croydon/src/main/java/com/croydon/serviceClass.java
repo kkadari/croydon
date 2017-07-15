@@ -1,7 +1,12 @@
 package com.croydon;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -27,11 +32,18 @@ public class serviceClass implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private String folderName;
+	private String outputFolder;
 	private ArrayList<String> supportedFileList;
 	
-	
-	
 	public serviceClass() { }
+	
+	public String getOutputFolder() {
+		return outputFolder;
+	}
+
+	public void setOutputFolder(String outputFolder) {
+		this.outputFolder = outputFolder;
+	}
 
 	public String getFolderName() {
 		return folderName;
@@ -95,7 +107,7 @@ public class serviceClass implements Serializable
 		
 		ArrayList<ArrayList<String>> rdata = new ArrayList<ArrayList<String>>();
 		int rowCount = workbook.getSheetAt(0).getPhysicalNumberOfRows();
-		for(int i=0;i<rowCount;i++)
+		for(int i=1;i<rowCount;i++)
 		{
 			row = workbook.getSheetAt(0).getRow(i);
 			Iterator<Cell> it = row.iterator();
@@ -112,24 +124,33 @@ public class serviceClass implements Serializable
 		
 	}
 	
-	private ArrayList<ArrayList<String>> readRegNumberFromCSVFile(String fileName)
+	private ArrayList<ArrayList<String>> readRegNumberFromCSVFile(String fileName) throws IOException
 	{
-		
-		return null;
-		
-	}
-	
-	private void updateTestResultsToCSVFile(String make, String colour, String regNo, String fileName)
-	{
-				
-	}
-	
-	private void updateTestResultsToExcelFile(String make, String colour, String regNo, String fileName)
-	{
-		
+		ArrayList<ArrayList<String>> rdata = new ArrayList<ArrayList<String>>();
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
 
+		    String line = br.readLine();
+		    line = br.readLine();
+		    //System.out.println("Line:" + line);
+		    while (line != null) {
+		        
+		        System.out.println("Line:" + line);
+			    String[] tokens = line.split(",");
+				ArrayList<String> rowdata = new ArrayList<String>();
+				rowdata.add(fileName);
+			    for(int i=0;i<tokens.length;i++){
+			    	rowdata.add(tokens[i]);
+			    }
+		        rdata.add(rowdata);
+		        line = br.readLine();
+		    }
+
+		br.close();
+		System.out.println("Rows: " + rdata.toString());
+		return rdata;
 		
 	}
+	
 	
 	public ArrayList<ArrayList<String>>  readRegNumberFromFile(String fileName) throws InvalidFormatException, IOException
 	{
@@ -146,17 +167,15 @@ public class serviceClass implements Serializable
 		return rdata;
 	}
 	
-	public void updateDataInFile(String make, String colour, String regNo, String fileName)
+	public void updateDataInFile(String make, String colour, String regNo, String fileName) throws IOException
 	{
-		String fextn = FilenameUtils.getExtension(fileName);
-		switch(fextn)
-		{
-			case "xlsx":
-			case "xls": updateTestResultsToExcelFile(make, colour, regNo, fileName);
-						break;
-			case "csv": updateTestResultsToCSVFile(make, colour, regNo, fileName);
-						break;
-		}
+		BufferedWriter bw = new BufferedWriter(new FileWriter("Output_File.csv",true));		
+		StringBuffer bf = new StringBuffer();
+		bf.append(fileName).append(",").append(regNo).append(",").append(make)
+			.append(",").append(colour);
+		bw.write(bf.toString());
+		bw.newLine();
+		bw.close();
 
 	}
 	

@@ -25,9 +25,9 @@ public class VehicleEnquiryResultsPage extends PageBase{
 	{
 
 		boolean makeMatched = false;
-		String makeMatch = "Not Matched";
+		String makeMatch = "Make Not Matched";
 		boolean colourMatched = false;
-		String colourMatch = "Not Matched";
+		String colourMatch = "Colour Not Matched";
 
 		List<WebElement> wlist = driver.findElements(By.className("list-summary-item"));
 		System.out.println(wlist.size());
@@ -39,12 +39,12 @@ public class VehicleEnquiryResultsPage extends PageBase{
 		    if(searchStr.toUpperCase().contains(make.toUpperCase())){
 		    	System.out.println("Make Matches");
 		    	makeMatched = true;
-		    	makeMatch = "Matched";
+		    	makeMatch = "Make Matched";
 		    }
 		    if(searchStr.toUpperCase().contains(colour.toUpperCase())){
 		    	System.out.println("Colour Matches");
 		    	colourMatched = true;
-		    	colourMatch = "Matched";
+		    	colourMatch = "Colour Matched";
 		    }
 		}
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);

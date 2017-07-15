@@ -31,8 +31,8 @@ public class serviceCall {
 		dataClass.setFolderName("C:\\Data\\DataFiles");
 		
 		ArrayList<String> sfiles = new ArrayList<String>();
-		sfiles.add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		//sfiles.add("application/vnd.ms-excel");
+		//sfiles.add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		sfiles.add("application/vnd.ms-excel");
 		dataClass.setSupportedFileList(sfiles);
 		File[] files = dataClass.getFiles();
 		for(File f : files){
@@ -42,7 +42,7 @@ public class serviceCall {
 				System.out.println("TT:" + tt.toString());
 				Object[] kk = (tt.toArray(new String[tt.size()]));
 				//String[] pp = (tt.toArray(new String[tt.size()]));
-				//System.out.println("kk:" + kk[1].toString());				
+				System.out.println("kk:" + kk[1].toString());				
 				odata.add(kk);
 			}
 		}
